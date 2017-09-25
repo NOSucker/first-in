@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="base" namespace="/" extends="struts-default" abstract="true">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+		</result-types>
+    	<interceptors>
+    	
+    		<interceptor name="login" class="cn.edu.nsu.predom.interceptor.LoginInterceptor"/>
+    		
+				<interceptor-stack name="myDefaultStack">
+				<interceptor-ref name="login"/>
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                  <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                    <param name="validateAnnotatedMethodOnly">true</param>
+                    
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+    	</interceptors>
+    	<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
+    	
+    	<global-results>
+    		<result name="notLogin">/notLogin.jsp</result>
+    	</global-results>
+    	
+    </package>
+
+	<package name="home" namespace="/" extends="base">
+    	<action name="home" class="cn.edu.nsu.predom.action.HomeAction" method="home">
+    		<result name="home">/login.jsp</result>
+    	</action>
+    	<action name="login" class="cn.edu.nsu.predom.action.HomeAction" method="login">
+    		<result name="login">/adminMain.jsp</result>
+    		<result name="input">/login.jsp</result>
+    	</action>
+    </package>
+	
+	<package name="user" namespace="/users" extends="base">
+		<action name="user" class="cn.edu.nsu.predom.action.UserAction">
+			<result name="list">/users/users.jsp</result>
+			
+			<result name="jsonList" type="json">
+				<param name="root">userList</param>
+			</result>
+			<result name="openModify">/users/modifyUsers.jsp</result>
+			<result name="modify">/users/modifyUserSuccess.jsp</result>
+			<result name="delete">/users/deleteUserSuccess.jsp</result>
+			<result name="openAdd">/users/addUsers.jsp</result>
+			<result name="add">/users/addUserSuccess.jsp</result>
+		</action>
+	</package>
+	
+	<package name="userGroup" namespace="/userGroups" extends="base">
+		<action name="userGroup" class="cn.edu.nsu.predom.action.UserGroupAction">
+			<result name="userGroupList">/userGroups/userGroup.jsp</result>
+			<result name="openAddUserGroup">/userGroups/addUserGroup.jsp</result>
+			<result name="addUserGroup">/userGroups/addUserGroupSuccess.jsp</result>
+			<result name="openModifyUserGroup">/userGroups/modifyUserGroup.jsp</result>
+			<result name="modifyUserGroup">/userGroups/modifyUserGroupSuccess.jsp</result>
+			<result name="deleteUserGroup">/userGroups/deleteUserGroupSuccess.jsp</result>
+		</action>
+	</package>
+	
+</struts>    
